@@ -1,26 +1,43 @@
 import { createContext, useEffect, useState } from "react";
 
 export const DataContext = createContext();
+
 export const DataProvider = ({ children }) => {
-  const [gardeners, setGardeners] = useState([]);
+  const [data, setData] = useState({
+    gardeners: [],
+    tips: [],
+    error: null
+  });
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/gardeners");
-        if (!response.ok) {
+        const [gardenersResponse, tipsResponse] = await Promise.all([
+          fetch("http://localhost:3000/gardeners"),
+          fetch("http://localhost:3000/tips")
+        ]);
+
+        if (!gardenersResponse.ok || !tipsResponse.ok) {
           throw new Error("Network response was not ok");
         }
-        const data = await response.json();
-        setGardeners(data);
+
+        const [gardenersData, tipsData] = await Promise.all([
+          gardenersResponse.json(),
+          tipsResponse.json()
+        ]);
+
+        setData({ gardeners: gardenersData, tips: tipsData, error: null });
       } catch (error) {
+        setData(prevData => ({ ...prevData, error: error.message }));
         console.error("Fetch error:", error);
       }
     };
 
     fetchData();
   }, []);
+
   return (
-    <DataContext.Provider value={{ gardeners, setGardeners }}>
+    <DataContext.Provider value={data}>
       {children}
     </DataContext.Provider>
   );

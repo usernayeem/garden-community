@@ -27,7 +27,7 @@ export const Gardeners = () => {
           >
             <div className="relative h-60 overflow-hidden bg-gray-100 dark:bg-gray-600">
               <img
-                src={gardener.photoUrl}
+                src=""
                 alt={gardener.name}
                 className="w-full h-full object-cover"
                 onError={e => {
