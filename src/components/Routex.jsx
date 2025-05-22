@@ -5,6 +5,7 @@ import { Root } from "./Root";
 import { Home } from "../pages/Home";
 import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
+import { ForgetPass } from "../pages/ForgetPass";
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ export const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />
+      },
+      {
+        path: "/forget-password",
+        element: <ForgetPass />
       }
     ]
   }

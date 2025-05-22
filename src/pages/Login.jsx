@@ -1,11 +1,45 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useRef, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 export const Login = () => {
+  const { Login, googleAuth, auth } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const emailRef = useRef();
+  const [error, setError] = useState();
+  const [success, setSuccess] = useState();
+
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleLogin = e => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const email = formData.get("email") || "";
+    const password = formData.get("password") || "";
+
+    Login(email, password)
+      .then(result => {
+        navigate(`${location.state ? location.state : "/"}`);
+      })
+      .catch(() => {
+        setError("Incorrect Email or Password");
+      });
+  };
+
+  const handleGoogleAuth = () => {
+    googleAuth()
+      .then(result => {
+        navigate(`${location.state ? location.state : "/"}`);
+      })
+      .catch(error => {
+        const errorMessage = error.message;
+        setError(errorMessage);
+      });
   };
 
   return (
@@ -25,7 +59,12 @@ export const Login = () => {
           </div>
 
           <div className="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden border border-gray-100 dark:border-gray-600 p-6">
-            <form>
+            {error &&
+              <div className="mb-4 p-3 bg-red-100 text-red-700 border border-red-200 rounded">
+                {error}
+              </div>}
+
+            <form onSubmit={handleLogin}>
               <div className="mb-4">
                 <label
                   htmlFor="email"
@@ -38,6 +77,7 @@ export const Login = () => {
                   id="email"
                   className="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-white text-base focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                   placeholder="Enter your email"
+                  ref={emailRef}
                   required
                 />
               </div>
@@ -51,10 +91,10 @@ export const Login = () => {
                     Password
                   </label>
                   <Link
-                    to="/forgot-password"
+                    to="/forget-password"
                     className="text-xs text-primary hover:underline"
                   >
-                    Forgot Password?
+                    Forget Password?
                   </Link>
                 </div>
                 <div className="relative">
@@ -125,6 +165,7 @@ export const Login = () => {
             </div>
 
             <button
+              onClick={handleGoogleAuth}
               type="button"
               className="w-full py-3 px-4 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900 text-gray-800 dark:text-white font-medium rounded-md transition duration-300 ease-in-out border border-gray-300 dark:border-gray-600 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 mb-6"
             >

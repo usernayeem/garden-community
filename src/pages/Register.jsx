@@ -1,11 +1,67 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router";
+import { AuthContext } from "../context/AuthContext";
 
 export const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const { registerUser, setUser, googleAuth } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const validatePassword = password => {
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(
+      password
+    );
+    const isValidLength = password.length >= 8;
+
+    return hasUpperCase && hasLowerCase && hasSpecialChar && isValidLength;
+  };
+
+  const handleRegistration = e => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const name = formData.get("name") || "";
+    const email = formData.get("email") || "";
+    const photoUrl = formData.get("photo") || "";
+    const password = formData.get("password") || "";
+
+    if (!validatePassword(password)) {
+      setError(
+        "Password must have at least 8 characters, including an uppercase letter, a lowercase letter, and a special character."
+      );
+      return;
+    }
+
+    registerUser(email, password)
+      .then(result => {
+        const user = result.user;
+        setUser(user);
+        navigate(`${location.state ? location.state : "/"}`);
+      })
+      .catch(error => {
+        const errorMessage = error.message;
+        setError(errorMessage);
+      });
+  };
+
+  const handleGoogleAuth = () => {
+    googleAuth()
+      .then(result => {
+        const user = result.user;
+        setUser(user);
+        navigate(`${location.state ? location.state : "/"}`);
+      })
+      .catch(error => {
+        const errorMessage = error.message;
+        setError(errorMessage);
+      });
   };
 
   return (
@@ -25,7 +81,12 @@ export const Register = () => {
           </div>
 
           <div className="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden border border-gray-100 dark:border-gray-600 p-6">
-            <form>
+            {error &&
+              <div className="mb-4 p-3 bg-red-100 text-red-700 border border-red-200 rounded">
+                {error}
+              </div>}
+
+            <form onSubmit={handleRegistration}>
               <div className="mb-4">
                 <label
                   htmlFor="name"
@@ -36,6 +97,7 @@ export const Register = () => {
                 <input
                   type="text"
                   id="name"
+                  name="name"
                   className="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-white text-base focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                   placeholder="Enter your name"
                 />
@@ -51,6 +113,7 @@ export const Register = () => {
                 <input
                   type="email"
                   id="email"
+                  name="email"
                   className="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-white text-base focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                   placeholder="Enter your email"
                   required
@@ -76,6 +139,7 @@ export const Register = () => {
                   <input
                     type={showPassword ? "text" : "password"}
                     id="password"
+                    name="password"
                     className="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-white text-base focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                     placeholder="Enter your password"
                     required
@@ -122,18 +186,23 @@ export const Register = () => {
                         </svg>}
                   </button>
                 </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  Must be at least 8 characters with 1 uppercase, 1 lowercase,
+                  and 1 special character.
+                </p>
               </div>
 
               <div className="mb-4">
                 <label
-                  htmlFor="photourl"
+                  htmlFor="photo"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
                 >
                   PhotoURL
                 </label>
                 <input
                   type="text"
-                  id="photourl"
+                  id="photo"
+                  name="photo"
                   className="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-white text-base focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                   placeholder="Enter your photo url"
                 />
@@ -155,6 +224,7 @@ export const Register = () => {
             </div>
 
             <button
+              onClick={handleGoogleAuth}
               type="button"
               className="w-full py-3 px-4 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900 text-gray-800 dark:text-white font-medium rounded-md transition duration-300 ease-in-out border border-gray-300 dark:border-gray-600 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 mb-6"
             >
