@@ -5,7 +5,7 @@ export const Gardeners = () => {
   const { gardeners } = useContext(DataContext);
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-800 p-12">
+    <div id="gardeners" className="bg-gray-50 dark:bg-gray-800 p-12">
       <div className="text-center mb-12">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">
           Featured Gardeners

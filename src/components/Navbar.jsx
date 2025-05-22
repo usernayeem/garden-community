@@ -1,8 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
+import { Link } from "react-router";
 
 export const Navbar = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const profileDropdownRef = useRef(null);
+
+  const { user, Logout } = useContext(AuthContext);
 
   // Close dropdown when clicking outside
   useEffect(
@@ -29,13 +33,23 @@ export const Navbar = () => {
   };
 
   const handleLogout = () => {
-    setIsProfileOpen(false);
+    Logout()
+      .then(() => {
+        setIsProfileOpen(false);
+        alert("logout");
+      })
+      .catch(error => {
+        alert("An error happened.");
+      });
   };
 
   return (
     <div className="navbar shadow-md sticky top-0 z-50 bg-white dark:bg-gray-800">
       <div className="navbar-start">
-        <a className="btn btn-ghost normal-case text-xl flex items-center">
+        <Link
+          to="/"
+          className="btn btn-ghost normal-case text-xl flex items-center"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 mr-2 text-green-600"
@@ -51,17 +65,21 @@ export const Navbar = () => {
             />
           </svg>
           GardenCommunity
-        </a>
+        </Link>
       </div>
 
       {/* Desktop Navigation Links */}
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <a className="hover:text-primary">Home</a>
+            <Link to="/" className="hover:text-primary">
+              Home
+            </Link>
           </li>
           <li>
-            <a className="hover:text-primary">Explore Gardeners</a>
+            <a href="#gardeners" className="hover:text-primary">
+              Explore Gardeners
+            </a>
           </li>
           <li>
             <a className="hover:text-primary">Browse Tips</a>
@@ -72,54 +90,74 @@ export const Navbar = () => {
           <li>
             <a className="hover:text-primary">My Tips</a>
           </li>
-          <li>
-            <a className="hover:text-primary">Login</a>
-          </li>
-          <li>
-            <a className="hover:text-primary">SignUp</a>
-          </li>
         </ul>
       </div>
 
       <div className="navbar-end">
         {/* User photo with dropdown and tooltip */}
-        <div className="relative mr-4" ref={profileDropdownRef}>
-          <div className="group tooltip-trigger relative">
-            <div
-              className="avatar cursor-pointer"
-              onClick={toggleProfileDropdown}
-            >
-              <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                <img
-                  src="https://lh3.googleusercontent.com/-tCA_KlGD-LE/AAAAAAAAAAI/AAAAAAAAAAA/ALKGfklwAxkotGJjmuTRVyfpRqdFD7rr7Q/photo.jpg?sz=46"
-                  alt="User"
-                />
+        {user
+          ? <div className="relative mr-4" ref={profileDropdownRef}>
+              <div className="group tooltip-trigger relative">
+                <div
+                  className="avatar cursor-pointer"
+                  onClick={toggleProfileDropdown}
+                >
+                  <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                    <img
+                      className="rounded-full"
+                      src={
+                        user && user.photoURL
+                          ? user.photoURL
+                          : "https://i.ibb.co/4wsPz9SL/profile-removebg-preview.webp"
+                      }
+                      alt="Profile"
+                    />} />
+                  </div>
+                </div>
+
+                {/* Tooltip */}
+                {!isProfileOpen &&
+                  <span className="w-auto tooltip absolute z-10 -bottom-10 left-1/2 transform -translate-x-1/2 px-3 py-1 text-sm font-medium text-white bg-primary rounded-md break-normal">
+                    {user && user.displayName
+                      ? user.displayName
+                      : "Name not available"}
+                  </span>}
               </div>
+
+              {/* Dropdown menu */}
+              {isProfileOpen &&
+                <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-700 ring-1 ring-black ring-opacity-5">
+                  <div className="px-4 py-2 text-sm text-gray-700 dark:text-gray-200 border-b border-gray-200 dark:border-gray-600">
+                    <p className="font-semibold">
+                      {user && user.displayName
+                        ? user.displayName
+                        : "Name not available"}
+                    </p>
+                    <p className="text-xs">
+                      {user && user.email ? user.email : "Email not available"}
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600"
+                  >
+                    Logout
+                  </button>
+                </div>}
             </div>
-
-            {/* Tooltip */}
-            {!isProfileOpen &&
-              <span className="tooltip absolute z-10 -bottom-10 left-1/2 transform -translate-x-1/2 w-auto px-3 py-1 text-sm font-medium text-white bg-primary rounded-md">
-                Md Nayeem
-              </span>}
-          </div>
-
-          {/* Dropdown menu */}
-          {isProfileOpen &&
-            <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-700 ring-1 ring-black ring-opacity-5">
-              <div className="px-4 py-2 text-sm text-gray-700 dark:text-gray-200 border-b border-gray-200 dark:border-gray-600">
-                <p className="font-semibold">Md Nayeem</p>
-                <p className="text-xs">nayeem@gmail.com</p>
-              </div>
-
-              <button
-                onClick={handleLogout}
-                className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600"
-              >
-                Logout
-              </button>
-            </div>}
-        </div>
+          : <ul className="hidden lg:flex gap-4 mr-4">
+              <li>
+                <Link to="/login" className="hover:text-primary">
+                  Login
+                </Link>
+              </li>
+              <li>
+                <Link to="/register" className="hover:text-primary">
+                  Register
+                </Link>
+              </li>
+            </ul>}
 
         {/* Mobile menu */}
         <div className="dropdown dropdown-end lg:hidden">
@@ -147,7 +185,7 @@ export const Navbar = () => {
                          bg-base-100 dark:bg-gray-700 rounded-box w-52"
           >
             <li>
-              <a>Home</a>
+              <Link to="/">Home</Link>
             </li>
             <li>
               <a>Explore Gardeners</a>
@@ -161,12 +199,15 @@ export const Navbar = () => {
             <li>
               <a>My Tips</a>
             </li>
-            <li>
-              <a>Login</a>
-            </li>
-            <li>
-              <a>SignUp</a>
-            </li>
+            {!user &&
+              <ul>
+                <li>
+                  <Link to="/login">Login</Link>
+                </li>
+                <li>
+                  <Link to="/register">Register</Link>
+                </li>
+              </ul>}
           </ul>
         </div>
       </div>
