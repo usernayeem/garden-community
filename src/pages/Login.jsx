@@ -1,15 +1,14 @@
 import React, { useContext, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { useToast } from "../context/ToastContext";
 
 export const Login = () => {
   const { Login, googleAuth, auth } = useContext(AuthContext);
+  const toast = useToast();
   const navigate = useNavigate();
   const location = useLocation();
   const emailRef = useRef();
-  const [error, setError] = useState();
-  const [success, setSuccess] = useState();
-
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -24,21 +23,22 @@ export const Login = () => {
 
     Login(email, password)
       .then(result => {
+        toast.success("Login successful! Welcome back.");
         navigate(`${location.state ? location.state : "/"}`);
       })
-      .catch(() => {
-        setError("Incorrect Email or Password");
+      .catch(error => {
+        toast.error("Incorrect email or password");
       });
   };
 
   const handleGoogleAuth = () => {
     googleAuth()
       .then(result => {
+        toast.success("Google login successful!");
         navigate(`${location.state ? location.state : "/"}`);
       })
       .catch(error => {
-        const errorMessage = error.message;
-        setError(errorMessage);
+        toast.error(error.message || "Failed to login with Google");
       });
   };
 
@@ -59,11 +59,6 @@ export const Login = () => {
           </div>
 
           <div className="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden border border-gray-100 dark:border-gray-600 p-6">
-            {error &&
-              <div className="mb-4 p-3 bg-red-100 text-red-700 border border-red-200 rounded">
-                {error}
-              </div>}
-
             <form onSubmit={handleLogin}>
               <div className="mb-4">
                 <label
@@ -75,6 +70,7 @@ export const Login = () => {
                 <input
                   type="email"
                   id="email"
+                  name="email"
                   className="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-white text-base focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                   placeholder="Enter your email"
                   ref={emailRef}
@@ -101,6 +97,7 @@ export const Login = () => {
                   <input
                     type={showPassword ? "text" : "password"}
                     id="password"
+                    name="password"
                     className="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-white text-base focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                     placeholder="Enter your password"
                     required

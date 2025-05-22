@@ -1,17 +1,17 @@
 import React, { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { useToast } from "../context/ToastContext";
 
 export const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
+  const { registerUser, setUser, googleAuth } = useContext(AuthContext);
+  const toast = useToast();
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
-  const { registerUser, setUser, googleAuth } = useContext(AuthContext);
-  const navigate = useNavigate();
 
   const validatePassword = password => {
     const hasUpperCase = /[A-Z]/.test(password);
@@ -33,7 +33,7 @@ export const Register = () => {
     const password = formData.get("password") || "";
 
     if (!validatePassword(password)) {
-      setError(
+      toast.warning(
         "Password must have at least 8 characters, including an uppercase letter, a lowercase letter, and a special character."
       );
       return;
@@ -43,11 +43,11 @@ export const Register = () => {
       .then(result => {
         const user = result.user;
         setUser(user);
+        toast.success("Registration successful! Welcome to GardenCommunity!");
         navigate(`${location.state ? location.state : "/"}`);
       })
       .catch(error => {
-        const errorMessage = error.message;
-        setError(errorMessage);
+        toast.error(error.message || "Registration failed. Please try again.");
       });
   };
 
@@ -56,11 +56,11 @@ export const Register = () => {
       .then(result => {
         const user = result.user;
         setUser(user);
+        toast.success("Google signup successful! Welcome to GardenCommunity!");
         navigate(`${location.state ? location.state : "/"}`);
       })
       .catch(error => {
-        const errorMessage = error.message;
-        setError(errorMessage);
+        toast.error(error.message || "Google signup failed. Please try again.");
       });
   };
 
@@ -81,11 +81,6 @@ export const Register = () => {
           </div>
 
           <div className="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden border border-gray-100 dark:border-gray-600 p-6">
-            {error &&
-              <div className="mb-4 p-3 bg-red-100 text-red-700 border border-red-200 rounded">
-                {error}
-              </div>}
-
             <form onSubmit={handleRegistration}>
               <div className="mb-4">
                 <label

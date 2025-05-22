@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router";
+import { useToast } from "../context/ToastContext";
 
 export const Navbar = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const profileDropdownRef = useRef(null);
+  const toast = useToast();
 
   const { user, Logout } = useContext(AuthContext);
 
@@ -36,10 +38,10 @@ export const Navbar = () => {
     Logout()
       .then(() => {
         setIsProfileOpen(false);
-        alert("logout");
+        toast.info("Logout successful!.");
       })
       .catch(error => {
-        alert("An error happened.");
+        toast.error("An error happened.");
       });
   };
 
@@ -117,7 +119,7 @@ export const Navbar = () => {
 
                 {/* Tooltip */}
                 {!isProfileOpen &&
-                  <span className="w-auto tooltip absolute z-10 -bottom-10 left-1/2 transform -translate-x-1/2 px-3 py-1 text-sm font-medium text-white bg-primary rounded-md break-normal">
+                  <span className="w-30 tooltip absolute z-10 -bottom-8 left-1/5 transform -translate-x-1/2 px-3 py-1 text-sm font-medium text-white bg-primary rounded-md break-normal text-center">
                     {user && user.displayName
                       ? user.displayName
                       : "Name not available"}
@@ -147,12 +149,12 @@ export const Navbar = () => {
                 </div>}
             </div>
           : <ul className="hidden lg:flex gap-4 mr-4">
-              <li>
+              <li className="btn btn-primary">
                 <Link to="/login" className="hover:text-primary">
                   Login
                 </Link>
               </li>
-              <li>
+              <li className="btn btn-primary">
                 <Link to="/register" className="hover:text-primary">
                   Register
                 </Link>

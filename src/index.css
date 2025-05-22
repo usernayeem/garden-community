@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
-html{
+html {
   scroll-behavior: smooth;
 }
 
@@ -17,3 +17,71 @@ html{
   opacity: 1;
 }
 
+/* Toast customization */
+.Toastify__toast {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Light mode styles */
+.Toastify__toast--success {
+  background-color: #ecf7ed;
+  color: #166534;
+  border-left: 4px solid #22c55e;
+}
+
+.Toastify__toast--error {
+  background-color: #fef2f2;
+  color: #b91c1c;
+  border-left: 4px solid #ef4444;
+}
+
+.Toastify__toast--info {
+  background-color: #eff6ff;
+  color: #1e40af;
+  border-left: 4px solid #3b82f6;
+}
+
+.Toastify__toast--warning {
+  background-color: #fffbeb;
+  color: #92400e;
+  border-left: 4px solid #f59e0b;
+}
+
+/* Dark mode support */
+.dark .Toastify__toast {
+  background-color: #333;
+  color: #fff;
+}
+
+.dark .Toastify__close-button {
+  color: #fff;
+}
+
+.dark .Toastify__progress-bar {
+  background-color: #5D5CDE;
+}
+
+.dark .Toastify__toast--success {
+  background-color: #14532d;
+  color: #bbf7d0;
+  border-left: 4px solid #22c55e;
+}
+
+.dark .Toastify__toast--error {
+  background-color: #7f1d1d;
+  color: #fecaca;
+  border-left: 4px solid #ef4444;
+}
+
+.dark .Toastify__toast--info {
+  background-color: #172554;
+  color: #bfdbfe;
+  border-left: 4px solid #3b82f6;
+}
+
+.dark .Toastify__toast--warning {
+  background-color: #78350f;
+  color: #fef3c7;
+  border-left: 4px solid #f59e0b;
+}
