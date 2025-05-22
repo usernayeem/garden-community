@@ -87,7 +87,9 @@ export const Navbar = () => {
             <a className="hover:text-primary">Browse Tips</a>
           </li>
           <li>
-            <a className="hover:text-primary">Share a Garden Tip</a>
+            <Link to="/share-tip" className="hover:text-primary">
+              Share a Garden Tip
+            </Link>
           </li>
           <li>
             <a className="hover:text-primary">My Tips</a>
@@ -196,7 +198,7 @@ export const Navbar = () => {
               <a>Browse Tips</a>
             </li>
             <li>
-              <a>Share a Garden Tip</a>
+              <Link to="/share-tip">Share a Garden Tip</Link>
             </li>
             <li>
               <a>My Tips</a>
