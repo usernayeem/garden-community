@@ -4,7 +4,7 @@ import { DataContext } from "../context/DataContext";
 export const Tips = () => {
   const { tips } = useContext(DataContext);
   return (
-    <div className="p-12">
+    <div className="bg-white dark:bg-gray-800 p-12">
       <div className="text-center mb-12">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">
           Top Trending Tips
