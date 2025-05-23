@@ -7,6 +7,7 @@ import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
 import { ForgetPass } from "../pages/ForgetPass";
 import { ShareTip } from "../pages/ShareTip";
+import BrowseTips from "../pages/BrowseTips";
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ export const router = createBrowserRouter([
       {
         path: "/share-tip",
         element: <ShareTip />
+      },
+      {
+        path: "/browse-tips",
+        element: <BrowseTips />
       }
     ]
   }

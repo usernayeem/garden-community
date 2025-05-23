@@ -84,7 +84,9 @@ export const Navbar = () => {
             </a>
           </li>
           <li>
-            <a className="hover:text-primary">Browse Tips</a>
+            <Link to="/browse-tips" className="hover:text-primary">
+              Browse Tips
+            </Link>
           </li>
           <li>
             <Link to="/share-tip" className="hover:text-primary">
