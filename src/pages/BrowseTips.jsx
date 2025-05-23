@@ -34,7 +34,7 @@ export const BrowseTips = () => {
   useEffect(() => {
     const fetchTips = async () => {
       try {
-        const response = await fetch("http://localhost:3000/tip");
+        const response = await fetch("http://localhost:3000/tips");
         const data = await response.json();
         // Filter to only include public tips
         const publicTips = data.filter(tip => tip.availability === "Public");
