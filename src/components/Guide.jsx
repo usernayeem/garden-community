@@ -121,7 +121,7 @@ export const Guide = () => {
   ];
 
   return (
-    <div className="p-12 bg-gray-50 dark:bg-gray-800">
+    <div className="p-12 bg-[#f3f4f6] dark:bg-gray-800">
       <div className="text-center mb-12">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">
           Seasonal Gardening Guide

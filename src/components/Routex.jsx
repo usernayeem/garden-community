@@ -12,6 +12,7 @@ import { TipDetails } from "../pages/TipDetails";
 import { MyTips } from "../pages/MyTips";
 import { UpdateTip } from "../pages/UpdateTip";
 import { PrivateRoute } from "./PrivateRoute";
+import { ExploreGardeners } from "../pages/ExploreGardeners";
 
 export const router = createBrowserRouter([
   {
@@ -69,6 +70,10 @@ export const router = createBrowserRouter([
             <UpdateTip />
           </PrivateRoute>
         )
+      },
+      {
+        path: "/explore-gardeners",
+        element: <ExploreGardeners />
       }
     ]
   }
