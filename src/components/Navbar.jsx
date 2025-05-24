@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useToast } from "../context/ToastContext";
 
 export const Navbar = () => {
@@ -91,31 +91,31 @@ export const Navbar = () => {
 
       {/* Desktop Navigation Links */}
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
+        <ul className="menu menu-horizontal px-1 flex gap-2">
           <li>
-            <Link to="/" className="hover:text-primary">
+            <NavLink to="/" className="hover:text-primary">
               Home
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <a href="#gardeners" className="hover:text-primary">
+            <NavLink to="/explore-gardeners" href="#gardeners" className="hover:text-primary">
               Explore Gardeners
-            </a>
+            </NavLink>
           </li>
           <li>
-            <Link to="/browse-tips" className="hover:text-primary">
+            <NavLink to="/browse-tips" className="hover:text-primary">
               Browse Tips
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link to="/share-tip" className="hover:text-primary">
+            <NavLink to="/share-tip" className="hover:text-primary">
               Share a Garden Tip
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link to="/my-tips" className="hover:text-primary">
+            <NavLink to="/my-tips" className="hover:text-primary">
               My Tips
-            </Link>
+            </NavLink>
           </li>
         </ul>
       </div>
@@ -204,27 +204,27 @@ export const Navbar = () => {
                        bg-base-100 dark:bg-gray-700 rounded-box w-52"
           >
             <li>
-              <Link to="/">Home</Link>
+              <NavLink to="/">Home</NavLink>
             </li>
             <li>
-              <a>Explore Gardeners</a>
+              <NavLink to="/explore-gardeners">Explore Gardeners</NavLink>
             </li>
             <li>
-              <Link to="/browse-tips">Browse Tips</Link>
+              <NavLink to="/browse-tips">Browse Tips</NavLink>
             </li>
             <li>
-              <Link to="/share-tip">Share a Garden Tip</Link>
+              <NavLink to="/share-tip">Share a Garden Tip</NavLink>
             </li>
             <li>
-              <Link to="/my-tips">My Tips</Link>
+              <NavLink to="/my-tips">My Tips</NavLink>
             </li>
             {!user &&
               <ul>
                 <li>
-                  <Link to="/login">Login</Link>
+                  <NavLink to="/login">Login</NavLink>
                 </li>
                 <li>
-                  <Link to="/register">Register</Link>
+                  <NavLink to="/register">Register</NavLink>
                 </li>
               </ul>}
           </ul>

@@ -5,6 +5,11 @@ html {
   scroll-behavior: smooth;
 }
 
+.active {
+  font-weight: bold;
+  color: #422AD5;
+}
+
 /* navbar */
 .tooltip {
   visibility: hidden;
