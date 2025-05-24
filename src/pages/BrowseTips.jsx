@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router";
-import { useToast } from "../context/ToastContext";
 
 export const BrowseTips = () => {
   const [tips, setTips] = useState([]);
   const [filteredTips, setFilteredTips] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
   const [difficultyFilter, setDifficultyFilter] = useState("");
   const itemsPerPage = 5;
-  const toast = useToast();
 
   // Categories array
   const categories = [
@@ -41,7 +40,7 @@ export const BrowseTips = () => {
         setTips(publicTips);
         setFilteredTips(publicTips);
       } catch (error) {
-        toast.error("Error fetching tips:", error);
+        setError("Error fetching tips:", error);
       } finally {
         setLoading(false);
       }
@@ -190,11 +189,10 @@ export const BrowseTips = () => {
                         <div className="avatar">
                           <div className="w-14 h-14 rounded">
                             <img 
-                              src={tip.imageUrl || "https://via.placeholder.com/150?text=No+Image"} 
+                              src={tip.imageUrl || "https://i.ibb.co/7NgZn1V0/no-image-available.webp"} 
                               alt={tip.title} 
                               onError={(e) => {
                                 e.target.onerror = null;
-                                e.target.src = "https://via.placeholder.com/150?text=Error";
                               }}
                             />
                           </div>
@@ -236,12 +234,11 @@ export const BrowseTips = () => {
                 <div key={tip._id} className="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden border border-gray-100 dark:border-gray-600">
                   <div className="relative h-48 overflow-hidden bg-gray-100 dark:bg-gray-600">
                     <img 
-                      src={tip.imageUrl || "https://via.placeholder.com/800x400?text=No+Image"} 
+                      src={tip.imageUrl || "https://i.ibb.co/7NgZn1V0/no-image-available.webp"} 
                       alt={tip.title} 
                       className="w-full h-full object-cover"
                       onError={(e) => {
                         e.target.onerror = null;
-                        e.target.src = "https://via.placeholder.com/800x400?text=Error";
                       }}
                     />
                     <div className="absolute top-2 right-2">
