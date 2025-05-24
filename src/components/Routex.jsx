@@ -13,6 +13,7 @@ import { MyTips } from "../pages/MyTips";
 import { UpdateTip } from "../pages/UpdateTip";
 import { PrivateRoute } from "./PrivateRoute";
 import { ExploreGardeners } from "../pages/ExploreGardeners";
+import { NotFound } from "../pages/NotFound";
 
 export const router = createBrowserRouter([
   {
@@ -74,6 +75,10 @@ export const router = createBrowserRouter([
       {
         path: "/explore-gardeners",
         element: <ExploreGardeners />
+      },
+      {
+        path: "*",
+        element: <NotFound />
       }
     ]
   }
