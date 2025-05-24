@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { useToast } from "../context/ToastContext";
 
 export const Navbar = () => {
@@ -8,7 +8,7 @@ export const Navbar = () => {
   const profileDropdownRef = useRef(null);
   const toast = useToast();
 
-  const { user, Logout } = useContext(AuthContext);
+  const { user, dbUser, Logout } = useContext(AuthContext);
 
   // Close dropdown when clicking outside
   useEffect(
@@ -43,6 +43,25 @@ export const Navbar = () => {
       .catch(error => {
         toast.error("An error happened.");
       });
+  };
+
+  // Get user's display name and photo URL
+  const getUserPhoto = () => {
+    if (user && user.photoURL) {
+      return user.photoURL;
+    } else if (dbUser && dbUser.photoURL) {
+      return dbUser.photoURL;
+    }
+    return "https://i.ibb.co/4wsPz9SL/profile-removebg-preview.webp";
+  };
+
+  const getUserName = () => {
+    if (user && user.displayName) {
+      return user.displayName;
+    } else if (dbUser && dbUser.name) {
+      return dbUser.name;
+    }
+    return "Name not available";
   };
 
   return (
@@ -113,22 +132,16 @@ export const Navbar = () => {
                   <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                     <img
                       className="rounded-full"
-                      src={
-                        user && user.photoURL
-                          ? user.photoURL
-                          : "https://i.ibb.co/4wsPz9SL/profile-removebg-preview.webp"
-                      }
+                      src={getUserPhoto()}
                       alt="Profile"
-                    />} />
+                    />
                   </div>
                 </div>
 
                 {/* Tooltip */}
                 {!isProfileOpen &&
                   <span className="w-30 tooltip absolute z-10 -bottom-8 left-1/5 transform -translate-x-1/2 px-3 py-1 text-sm font-medium text-white bg-primary rounded-md break-normal text-center">
-                    {user && user.displayName
-                      ? user.displayName
-                      : "Name not available"}
+                    {getUserName()}
                   </span>}
               </div>
 
@@ -137,9 +150,7 @@ export const Navbar = () => {
                 <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-gray-700 ring-1 ring-black ring-opacity-5">
                   <div className="px-4 py-2 text-sm text-gray-700 dark:text-gray-200 border-b border-gray-200 dark:border-gray-600">
                     <p className="font-semibold">
-                      {user && user.displayName
-                        ? user.displayName
-                        : "Name not available"}
+                      {getUserName()}
                     </p>
                     <p className="text-xs">
                       {user && user.email ? user.email : "Email not available"}
@@ -190,7 +201,7 @@ export const Navbar = () => {
           <ul
             tabIndex={0}
             className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow 
-                         bg-base-100 dark:bg-gray-700 rounded-box w-52"
+                       bg-base-100 dark:bg-gray-700 rounded-box w-52"
           >
             <li>
               <Link to="/">Home</Link>

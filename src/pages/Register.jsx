@@ -5,7 +5,9 @@ import { useToast } from "../context/ToastContext";
 
 export const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const { registerUser, setUser, googleAuth } = useContext(AuthContext);
+  const { registerUser, setUser, googleAuth, updateUserProfile } = useContext(
+    AuthContext
+  );
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -24,7 +26,17 @@ export const Register = () => {
     return hasUpperCase && hasLowerCase && hasSpecialChar && isValidLength;
   };
 
-  const handleRegistration = e => {
+  const saveUserToMongoDB = userData => {
+    return fetch("http://localhost:3000/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(userData)
+    });
+  };
+
+  const handleRegistration = async e => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const name = formData.get("name") || "";
@@ -39,29 +51,60 @@ export const Register = () => {
       return;
     }
 
-    registerUser(email, password)
-      .then(result => {
-        const user = result.user;
-        setUser(user);
-        toast.success("Registration successful! Welcome to GardenCommunity!");
-        navigate(`${location.state ? location.state : "/"}`);
-      })
-      .catch(error => {
-        toast.error(error.message || "Registration failed. Please try again.");
-      });
+    try {
+      // Step 1: Register with Firebase
+      const result = await registerUser(email, password);
+      const user = result.user;
+
+      // Step 2: Update Firebase profile if name or photo provided
+      if (name || photoUrl) {
+        await updateUserProfile(name, photoUrl);
+      }
+
+      // Step 3: Save user data to MongoDB
+      const userData = {
+        uid: user.uid,
+        name: name || user.displayName || "",
+        email: user.email,
+        photoURL: photoUrl || user.photoURL || "",
+        createdAt: new Date().toISOString()
+      };
+
+      await saveUserToMongoDB(userData);
+
+      // Step 4: Update local user state and redirect
+      setUser({ ...user, displayName: name || user.displayName });
+      toast.success("Registration successful! Welcome to GardenCommunity!");
+      navigate(`${location.state ? location.state : "/"}`);
+    } catch (error) {
+      toast.error(error.message || "Registration failed. Please try again.");
+    }
   };
 
-  const handleGoogleAuth = () => {
-    googleAuth()
-      .then(result => {
-        const user = result.user;
-        setUser(user);
-        toast.success("Google signup successful! Welcome to GardenCommunity!");
-        navigate(`${location.state ? location.state : "/"}`);
-      })
-      .catch(error => {
-        toast.error(error.message || "Google signup failed. Please try again.");
-      });
+  const handleGoogleAuth = async () => {
+    try {
+      // Step 1: Authenticate with Google
+      const result = await googleAuth();
+      const user = result.user;
+
+      // Step 2: Save user data to MongoDB
+      const userData = {
+        uid: user.uid,
+        name: user.displayName || "",
+        email: user.email,
+        photoURL: user.photoURL || "",
+        createdAt: new Date().toISOString()
+      };
+
+      await saveUserToMongoDB(userData);
+
+      // Step 3: Update local user state and redirect
+      setUser(user);
+      toast.success("Google signup successful! Welcome to GardenCommunity!");
+      navigate(`${location.state ? location.state : "/"}`);
+    } catch (error) {
+      toast.error(error.message || "Google signup failed. Please try again.");
+    }
   };
 
   return (

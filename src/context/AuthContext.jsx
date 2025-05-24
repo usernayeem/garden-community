@@ -7,7 +7,8 @@ import {
   signInWithEmailAndPassword,
   signOut,
   GoogleAuthProvider,
-  signInWithPopup
+  signInWithPopup,
+  updateProfile
 } from "firebase/auth";
 
 export const AuthContext = createContext();
@@ -16,10 +17,18 @@ const auth = getAuth(app);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
+  const [dbUser, setDbUser] = useState(null);
 
   const registerUser = (email, password) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
+  };
+
+  const updateUserProfile = (name, photoURL) => {
+    return updateProfile(auth.currentUser, {
+      displayName: name,
+      photoURL: photoURL
+    });
   };
 
   const Login = (email, password) => {
@@ -36,14 +45,39 @@ export const AuthProvider = ({ children }) => {
 
   const Logout = () => {
     setLoading(true);
+    setDbUser(null);
     return signOut(auth);
+  };
+
+  // Fetch user data from MongoDB when Firebase user changes
+  const fetchUserFromDb = async uid => {
+    try {
+      const response = await fetch(`http://localhost:3000/users/${uid}`);
+      if (response.ok) {
+        const userData = await response.json();
+        setDbUser(userData);
+      } else {
+        setDbUser(null);
+      }
+    } catch (error) {
+      console.error("Error fetching user from DB:", error);
+      setDbUser(null);
+    }
   };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, currentUser => {
       setUser(currentUser);
+
+      if (currentUser) {
+        fetchUserFromDb(currentUser.uid);
+      } else {
+        setDbUser(null);
+      }
+
       setLoading(false);
     });
+
     return () => {
       unsubscribe();
     };
@@ -51,14 +85,17 @@ export const AuthProvider = ({ children }) => {
 
   const userData = {
     user,
+    dbUser,
     setUser,
     registerUser,
+    updateUserProfile,
     Logout,
     Login,
     loading,
     googleAuth,
     auth
   };
+
   return (
     <AuthContext.Provider value={userData}>
       {children}
