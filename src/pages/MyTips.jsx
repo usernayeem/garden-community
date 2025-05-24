@@ -30,7 +30,7 @@ export const MyTips = () => {
       
       try {
         // Fetch all tips first as a workaround since the filter API might not be working correctly
-        const response = await fetch("http://localhost:3000/tips");
+        const response = await fetch("https://garden-community-brown.vercel.app/tips");
         
         if (!response.ok) {
           throw new Error(`Error ${response.status}: ${response.statusText || "Failed to fetch tips"}`);
@@ -95,7 +95,7 @@ export const MyTips = () => {
       setDeleteInProgress(true);
       
       try {
-        const response = await fetch(`http://localhost:3000/tips/${tip._id}`, {
+        const response = await fetch(`https://garden-community-brown.vercel.app/tips/${tip._id}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json"

@@ -13,8 +13,8 @@ export const DataProvider = ({ children }) => {
     const fetchData = async () => {
       try {
         const [gardenersResponse, tipsResponse] = await Promise.all([
-          fetch("http://localhost:3000/gardeners"),
-          fetch("http://localhost:3000/tips")
+          fetch("https://garden-community-brown.vercel.app/gardeners"),
+          fetch("https://garden-community-brown.vercel.app/tips")
         ]);
 
         if (!gardenersResponse.ok || !tipsResponse.ok) {

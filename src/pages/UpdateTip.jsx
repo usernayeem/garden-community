@@ -51,7 +51,7 @@ export const UpdateTip = () => {
       setError(null);
       
       try {
-        const response = await fetch(`http://localhost:3000/tips/${id}`);
+        const response = await fetch(`https://garden-community-brown.vercel.app/tips/${id}`);
         
         if (!response.ok) {
           throw new Error(`Error ${response.status}: ${response.statusText || "Failed to fetch tip data"}`);
@@ -98,7 +98,7 @@ export const UpdateTip = () => {
     e.preventDefault();
     
     try {
-      const response = await fetch(`http://localhost:3000/tips/${id}`, {
+      const response = await fetch(`https://garden-community-brown.vercel.app/tips/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)

@@ -31,7 +31,7 @@ export const ShareTip = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:3000/tips", {
+      const res = await fetch("https://garden-community-brown.vercel.app/tips", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData)

@@ -12,7 +12,7 @@ export const TrendingTips = () => {
     const fetchTrendingTips = async () => {
       try {
         setLoading(true);
-        const response = await fetch("http://localhost:3000/trending-tips");
+        const response = await fetch("https://garden-community-brown.vercel.app/trending-tips");
 
         if (!response.ok) {
           throw new Error(

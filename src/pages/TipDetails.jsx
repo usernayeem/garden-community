@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, useParams } from "react-router";
+import { Link, useLocation, useNavigate, useParams } from "react-router";
 import { AuthContext } from "../context/AuthContext";
 
 export const TipDetails = () => {
@@ -11,6 +11,9 @@ export const TipDetails = () => {
   const [error, setError] = useState(null);
   const [hasLiked, setHasLiked] = useState(false);
   const [likeInProgress, setLikeInProgress] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const previousRoute = location.state?.from || 'Previous Page';
 
   // Fetch tip data
   useEffect(() => {
@@ -19,7 +22,7 @@ export const TipDetails = () => {
       setError(null);
       
       try {
-        const response = await fetch(`http://localhost:3000/tips/${id}`);
+        const response = await fetch(`https://garden-community-brown.vercel.app/tips/${id}`);
         
         if (!response.ok) {
           throw new Error("Failed to fetch tip details");
@@ -62,7 +65,7 @@ export const TipDetails = () => {
     }));
     
     // Send update to server
-    const response = await fetch(`http://localhost:3000/tips/${id}/like`, {
+    const response = await fetch(`https://garden-community-brown.vercel.app/tips/${id}/like`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json"
@@ -116,12 +119,12 @@ export const TipDetails = () => {
       <div className="max-w-4xl mx-auto">
         {/* Back Button */}
         <div className="mb-6">
-          <Link to="/browse-tips" className="inline-flex items-center text-primary hover:text-primary-focus transition-colors">
+          <button onClick={() => navigate(-1)} className="inline-flex items-center text-primary hover:text-primary-focus transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            Back to Garden Tips
-          </Link>
+            Go Back
+          </button>
         </div>
 
         {/* Loading State */}

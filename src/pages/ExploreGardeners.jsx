@@ -27,7 +27,7 @@ export const ExploreGardeners = () => {
   useEffect(() => {
     const fetchGardeners = async () => {
       try {
-        const response = await fetch("http://localhost:3000/gardeners");
+        const response = await fetch("https://garden-community-brown.vercel.app/gardeners");
 
         if (!response.ok) {
           throw new Error(
