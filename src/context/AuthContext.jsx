@@ -60,7 +60,6 @@ export const AuthProvider = ({ children }) => {
         setDbUser(null);
       }
     } catch (error) {
-      console.error("Error fetching user from DB:", error);
       setDbUser(null);
     }
   };

@@ -29,7 +29,6 @@ export const DataProvider = ({ children }) => {
         setData({ gardeners: gardenersData, tips: tipsData, error: null });
       } catch (error) {
         setData(prevData => ({ ...prevData, error: error.message }));
-        console.error("Fetch error:", error);
       }
     };
 
