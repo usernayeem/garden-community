@@ -162,10 +162,15 @@ export const BrowseTips = () => {
             <p className="mt-4 text-gray-600 dark:text-gray-300">Loading garden tips...</p>
           </div>
         ) : filteredTips.length === 0 ? (
-          <div className="text-center py-12">
-            
-            <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-1">No garden tips found</h3>
-            <p className="text-gray-500 dark:text-gray-400">Try adjusting your search or filters</p>
+          <div className="text-center py-12 bg-white dark:bg-gray-700 rounded-lg shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mt-4 mb-1">No garden tips found</h3>
+            <p className="text-gray-500 dark:text-gray-400">You haven't created any garden tips yet or no tips match your search.</p>
+            <Link to="/share-tip" className="btn btn-primary mt-4">
+              Share Your First Tip
+            </Link>
           </div>
         ) : (
           <>
@@ -189,10 +194,11 @@ export const BrowseTips = () => {
                         <div className="avatar">
                           <div className="w-14 h-14 rounded">
                             <img 
-                              src={tip.imageUrl || "https://i.ibb.co/7NgZn1V0/no-image-available.webp"} 
+                              src={tip.imageUrl || "https://placehold.co/400x400?text=No+Image"} 
                               alt={tip.title} 
                               onError={(e) => {
                                 e.target.onerror = null;
+                                e.target.src = "https://i.ibb.co/7NgZn1V0/no-image-available.webp";
                               }}
                             />
                           </div>
@@ -234,11 +240,12 @@ export const BrowseTips = () => {
                 <div key={tip._id} className="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden border border-gray-100 dark:border-gray-600">
                   <div className="relative h-48 overflow-hidden bg-gray-100 dark:bg-gray-600">
                     <img 
-                      src={tip.imageUrl || "https://i.ibb.co/7NgZn1V0/no-image-available.webp"} 
+                      src={tip.imageUrl || "https://placehold.co/400x400?text=No+Image"} 
                       alt={tip.title} 
                       className="w-full h-full object-cover"
                       onError={(e) => {
                         e.target.onerror = null;
+                        e.target.src = "https://placehold.co/400x400?text=No+Image";
                       }}
                     />
                     <div className="absolute top-2 right-2">

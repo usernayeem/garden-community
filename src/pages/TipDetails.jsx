@@ -192,19 +192,18 @@ export const TipDetails = () => {
             </div>
             
             {/* Image Section */}
-            {tip.imageUrl && (
               <div className="relative bg-gray-100 dark:bg-gray-600 border-x border-gray-100 dark:border-gray-600 overflow-hidden">
                 <img 
-                  src={tip.imageUrl} 
+                  src={tip.imageUrl || "https://i.ibb.co/7NgZn1V0/no-image-available.webp"} 
                   alt={tip.title} 
                   className="w-full h-64 md:h-96 object-cover"
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = "https://via.placeholder.com/1200x600?text=Error+Loading+Image";
+                    e.target.src = "https://i.ibb.co/7NgZn1V0/no-image-available.webp";
                   }} 
                 />
               </div>
-            )}
+            
             
             {/* Content Section */}
             <div className="bg-white dark:bg-gray-700 p-6 md:p-8 border border-t-0 border-gray-100 dark:border-gray-600 rounded-b-lg shadow-md">

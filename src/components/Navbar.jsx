@@ -199,7 +199,7 @@ export const Navbar = () => {
               <a>Explore Gardeners</a>
             </li>
             <li>
-              <a>Browse Tips</a>
+              <Link to="/browse-tips">Browse Tips</Link>
             </li>
             <li>
               <Link to="/share-tip">Share a Garden Tip</Link>

@@ -37,7 +37,6 @@ export const MyTips = () => {
         }
         
         const allTips = await response.json();
-        console.log("All tips received:", allTips);
         
         // Filter on client side for the current user
         const userTips = allTips.filter(tip => tip.userEmail === user.email);
@@ -275,12 +274,13 @@ export const MyTips = () => {
                       <td className="px-4 py-3">
                         <div className="avatar">
                           <div className="w-14 h-14 rounded">
-                            <img 
-                              src={tip.imageUrl || "https://via.placeholder.com/150?text=No+Image"} 
+                            <img
+                              className="border border-accent rounded-md"
+                              src={tip.imageUrl || "https://i.ibb.co/7NgZn1V0/no-image-available.webp"} 
                               alt={tip.title} 
                               onError={(e) => {
                                 e.target.onerror = null;
-                                e.target.src = "https://via.placeholder.com/150?text=Error";
+                                e.target.src = "https://i.ibb.co/7NgZn1V0/no-image-available.webp";
                               }}
                             />
                           </div>
@@ -360,12 +360,11 @@ export const MyTips = () => {
                 <div key={tip._id} className="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden border border-gray-100 dark:border-gray-600">
                   <div className="relative h-48 overflow-hidden bg-gray-100 dark:bg-gray-600">
                     <img 
-                      src={tip.imageUrl || "https://via.placeholder.com/800x400?text=No+Image"} 
+                      src={tip.imageUrl || "https://i.ibb.co/7NgZn1V0/no-image-available.webp"} 
                       alt={tip.title} 
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover border border-accent"
                       onError={(e) => {
                         e.target.onerror = null;
-                        e.target.src = "https://via.placeholder.com/800x400?text=Error";
                       }}
                     />
                     <div className="absolute top-2 right-2 flex flex-col gap-2">
