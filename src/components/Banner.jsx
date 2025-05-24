@@ -133,9 +133,6 @@ export const Banner = () => {
               <p className="text-md md:text-lg mb-8">
                 {slide.date}
               </p>
-              <button className="btn btn-primary btn-lg">
-                {slide.buttonText}
-              </button>
             </div>
           </div>
         )}
@@ -143,5 +140,3 @@ export const Banner = () => {
     </div>
   );
 };
-
-export default Banner;

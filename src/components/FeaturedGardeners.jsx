@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Typewriter } from "react-simple-typewriter";
 
 export const FeaturedGardeners = () => {
   const [gardeners, setGardeners] = useState([]);
@@ -95,13 +96,26 @@ export const FeaturedGardeners = () => {
     <div className="p-6 md:p-12 bg-gray-50 dark:bg-gray-800 min-h-screen">
       <div className="text-center mb-12">
         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">
-          Explore Gardeners
+          Featured Gardeners
         </h2>
         <div className="flex justify-center">
           <div className="w-24 h-1 bg-primary rounded-full" />
         </div>
         <p className="mt-4 text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-          Connect with gardening enthusiasts and experts from our community.
+          <Typewriter
+            words={[
+              "Connect with gardening enthusiasts and experts from our community.",
+              "Find local gardeners to share tips and knowledge.",
+              "Discover experienced mentors for your gardening journey.",
+              "Learn from gardeners with various levels of expertise."
+            ]}
+            loop={true}
+            cursor
+            cursorStyle="|"
+            typeSpeed={70}
+            deleteSpeed={50}
+            delaySpeed={1500}
+          />
         </p>
       </div>
       {/* Gardeners Grid Section */}

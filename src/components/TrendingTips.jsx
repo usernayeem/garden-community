@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router";
+import { Typewriter } from "react-simple-typewriter";
 
 export const TrendingTips = () => {
   const [trendingTips, setTrendingTips] = useState([]);
@@ -57,7 +58,20 @@ export const TrendingTips = () => {
             <div className="w-24 h-1 bg-primary rounded-full" />
           </div>
           <p className="mt-4 text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Discover the most popular gardening tips from our community
+            <Typewriter
+              words={[
+                "Discover the most popular gardening tips from our community",
+                "Learn from experienced gardeners around the world",
+                "Find solutions to common gardening challenges",
+                "Get inspired with creative gardening ideas"
+              ]}
+              loop={true}
+              cursor
+              cursorStyle="|"
+              typeSpeed={70}
+              deleteSpeed={50}
+              delaySpeed={1500}
+            />
           </p>
         </div>
 

@@ -1,4 +1,5 @@
 import React from "react";
+import { Typewriter } from 'react-simple-typewriter';
 
 export const Guide = () => {
   const seasons = [
@@ -130,8 +131,20 @@ export const Guide = () => {
           <div className="w-24 h-1 bg-primary rounded-full" />
         </div>
         <p className="mt-4 text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-          Discover what to plant, maintain, and harvest during each season for a
-          thriving garden year-round.
+          <Typewriter
+            words={[
+              "Discover what to plant, maintain, and harvest during each season for a thriving garden year-round.",
+              "Follow our seasonal tips to keep your garden beautiful in every season.",
+              "Learn the best gardening practices aligned with nature's calendar.",
+              "Timing is everything - know what your garden needs in each season."
+            ]}
+            loop={true}
+            cursor
+            cursorStyle="|"
+            typeSpeed={70}
+            deleteSpeed={50}
+            delaySpeed={1500}
+          />
         </p>
       </div>
 

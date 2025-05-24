@@ -1,4 +1,5 @@
 import React from "react";
+import { Typewriter } from "react-simple-typewriter";
 
 export const Achievements = () => {
   const achievements = [
@@ -106,7 +107,20 @@ export const Achievements = () => {
           <div className="w-24 h-1 bg-primary rounded-full" />
         </div>
         <p className="mt-4 text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-          Together we're making the world greener, one garden at a time.
+          <Typewriter
+            words={[
+              "Together we're making the world greener, one garden at a time.",
+              "Celebrating our community's environmental impact.",
+              "Join us in creating a more sustainable future.",
+              "Small actions add up to big environmental changes."
+            ]}
+            loop={true}
+            cursor
+            cursorStyle="|"
+            typeSpeed={70}
+            deleteSpeed={50}
+            delaySpeed={1500}
+          />
         </p>
       </div>
 
