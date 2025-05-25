@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Typewriter } from "react-simple-typewriter";
+import { ThemeContext } from "../context/ThemeContext";
 
 export const Achievements = () => {
+  const { theme } = useContext(ThemeContext);
+
+  // Achievements data
   const achievements = [
     {
       id: 1,
@@ -98,15 +102,29 @@ export const Achievements = () => {
   ];
 
   return (
-    <div className="p-12 bg-white dark:bg-gray-800">
+    <div
+      className={`p-12 transition-colors duration-200 ${theme === "dark"
+        ? "bg-[#192837]"
+        : "bg-gray-100"}`}
+    >
       <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">
+        <h2
+          className={`text-3xl md:text-4xl font-bold mb-3 transition-colors duration-200 ${theme ===
+          "dark"
+            ? "text-white"
+            : "text-gray-900"}`}
+        >
           Community Achievements
         </h2>
         <div className="flex justify-center">
           <div className="w-24 h-1 bg-primary rounded-full" />
         </div>
-        <p className="mt-4 text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+        <p
+          className={`mt-4 text-lg max-w-2xl mx-auto transition-colors duration-200 ${theme ===
+          "dark"
+            ? "text-gray-300"
+            : "text-gray-600"}`}
+        >
           <Typewriter
             words={[
               "Together we're making the world greener, one garden at a time.",
@@ -128,26 +146,60 @@ export const Achievements = () => {
         {achievements.map(achievement =>
           <div
             key={achievement.id}
-            className="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden border border-gray-100 dark:border-gray-600 p-6"
+            className={`rounded-lg shadow-md overflow-hidden border p-6 transition-all duration-200 hover:shadow-lg ${theme ===
+            "dark"
+              ? "bg-gray-700 border-gray-600"
+              : "bg-white border-gray-100"}`}
           >
             <div className="flex items-start space-x-4">
-              <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded-lg">
+              <div
+                className={`p-3 rounded-lg transition-colors duration-200 ${theme ===
+                "dark"
+                  ? "bg-gray-800"
+                  : "bg-gray-100"}`}
+              >
                 {achievement.icon}
               </div>
               <div className="flex-1">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                <h3
+                  className={`text-lg font-semibold mb-2 transition-colors duration-200 ${theme ===
+                  "dark"
+                    ? "text-white"
+                    : "text-gray-900"}`}
+                >
                   {achievement.title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">
+                <p
+                  className={`mb-4 transition-colors duration-200 ${theme ===
+                  "dark"
+                    ? "text-gray-300"
+                    : "text-gray-600"}`}
+                >
                   {achievement.description}
                 </p>
-                <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-4 mb-2">
+                <div
+                  className={`w-full rounded-full h-4 mb-2 transition-colors duration-200 ${theme ===
+                  "dark"
+                    ? "bg-gray-600"
+                    : "bg-gray-200"}`}
+                >
                   <div
-                    className="bg-primary h-4 rounded-full"
-                    style={{ width: `${achievement.progress}%` }}
+                    className={`bg-primary h-4 rounded-full transition-all duration-500 ease-in-out`}
+                    style={{
+                      width: `${achievement.progress}%`,
+                      boxShadow:
+                        theme === "dark"
+                          ? "0 0 8px rgba(93, 92, 222, 0.6)"
+                          : "none"
+                    }}
                   />
                 </div>
-                <div className="text-sm text-gray-500 dark:text-gray-400 text-right">
+                <div
+                  className={`text-sm text-right transition-colors duration-200 ${theme ===
+                  "dark"
+                    ? "text-gray-400"
+                    : "text-gray-500"}`}
+                >
                   {achievement.progress}% complete
                 </div>
               </div>

@@ -1,10 +1,15 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useToast } from "../context/ToastContext";
+import { ThemeContext } from "../context/ThemeContext";
 
 export const ShareTip = () => {
+  const { theme } = useContext(ThemeContext);
   const { user } = useContext(AuthContext);
   const toast = useToast();
+  
+  // Track submission state
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   // Default form state
   const [formData, setFormData] = useState({
@@ -29,6 +34,7 @@ export const ShareTip = () => {
   
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     try {
       const res = await fetch("https://garden-community-brown.vercel.app/tips", {
@@ -55,6 +61,8 @@ export const ShareTip = () => {
       }
     } catch (error) {
       toast.error("Failed to submit garden tip. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
   
@@ -76,25 +84,25 @@ export const ShareTip = () => {
   const availabilityOptions = ["Public", "Hidden"];
   
   return (
-    <div className="p-12 bg-gray-50 dark:bg-gray-800">
+    <div className={`p-12 ${theme === "dark" ? "bg-gray-800" : "bg-gray-50"} transition-colors duration-200`}>
       <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">
+        <h2 className={`text-3xl md:text-4xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"} mb-3 transition-colors duration-200`}>
           Share a Garden Tip
         </h2>
         <div className="flex justify-center">
-          <div className="w-24 h-1 bg-primary rounded-full" />
+          <div className={`w-24 h-1 ${theme === "dark" ? "bg-primary" : "bg-primary"} rounded-full`} />
         </div>
-        <p className="mt-4 text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+        <p className={`mt-4 text-lg ${theme === "dark" ? "text-gray-300" : "text-gray-600"} max-w-2xl mx-auto transition-colors duration-200`}>
           Share your gardening knowledge and help our community grow together.
         </p>
       </div>
       
-      <div className="max-w-3xl mx-auto bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden border border-gray-100 dark:border-gray-600 p-6">
+      <div className={`max-w-3xl mx-auto ${theme === "dark" ? "bg-gray-700" : "bg-white"} rounded-lg shadow-md overflow-hidden ${theme === "dark" ? "border-gray-600" : "border-gray-100"} border p-6 transition-colors duration-200`}>
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Title */}
           <div className="form-control w-full">
             <label className="label">
-              <span className="label-text text-gray-700 dark:text-gray-200">Title</span>
+              <span className={`label-text ${theme === "dark" ? "text-gray-200" : "text-gray-700"} transition-colors duration-200`}>Title</span>
             </label>
             <input
               type="text"
@@ -102,7 +110,7 @@ export const ShareTip = () => {
               value={formData.title}
               onChange={handleChange}
               placeholder="e.g., How I Grow Tomatoes Indoors"
-              className="input input-bordered w-full text-base"
+              className={`input input-bordered w-full text-base ${theme === "dark" ? "bg-gray-600 border-gray-500 text-white placeholder-gray-400" : "bg-white text-gray-900 placeholder-gray-500"} transition-colors duration-200`}
               required
             />
           </div>
@@ -110,7 +118,7 @@ export const ShareTip = () => {
           {/* Plant Type/Topic */}
           <div className="form-control w-full">
             <label className="label">
-              <span className="label-text text-gray-700 dark:text-gray-200">Plant Type/Topic</span>
+              <span className={`label-text ${theme === "dark" ? "text-gray-200" : "text-gray-700"} transition-colors duration-200`}>Plant Type/Topic</span>
             </label>
             <input
               type="text"
@@ -118,7 +126,7 @@ export const ShareTip = () => {
               value={formData.plantType}
               onChange={handleChange}
               placeholder="e.g., Tomatoes, Succulents, Fertilizers"
-              className="input input-bordered w-full text-base"
+              className={`input input-bordered w-full text-base ${theme === "dark" ? "bg-gray-600 border-gray-500 text-white placeholder-gray-400" : "bg-white text-gray-900 placeholder-gray-500"} transition-colors duration-200`}
               required
             />
           </div>
@@ -128,17 +136,17 @@ export const ShareTip = () => {
             {/* Difficulty Level */}
             <div className="form-control w-full">
               <label className="label">
-                <span className="label-text text-gray-700 dark:text-gray-200">Difficulty Level</span>
+                <span className={`label-text ${theme === "dark" ? "text-gray-200" : "text-gray-700"} transition-colors duration-200`}>Difficulty Level</span>
               </label>
               <select
                 name="difficultyLevel"
                 value={formData.difficultyLevel}
                 onChange={handleChange}
-                className="select select-bordered w-full text-base"
+                className={`select select-bordered w-full text-base ${theme === "dark" ? "bg-gray-600 border-gray-500 text-white" : "bg-white text-gray-900"} transition-colors duration-200`}
                 required
               >
                 {difficultyLevels.map((level) => (
-                  <option key={level} value={level}>
+                  <option key={level} value={level} className={theme === "dark" ? "bg-gray-700" : "bg-white"}>
                     {level}
                   </option>
                 ))}
@@ -148,17 +156,17 @@ export const ShareTip = () => {
             {/* Category */}
             <div className="form-control w-full">
               <label className="label">
-                <span className="label-text text-gray-700 dark:text-gray-200">Category</span>
+                <span className={`label-text ${theme === "dark" ? "text-gray-200" : "text-gray-700"} transition-colors duration-200`}>Category</span>
               </label>
               <select
                 name="category"
                 value={formData.category}
                 onChange={handleChange}
-                className="select select-bordered w-full text-base"
+                className={`select select-bordered w-full text-base ${theme === "dark" ? "bg-gray-600 border-gray-500 text-white" : "bg-white text-gray-900"} transition-colors duration-200`}
                 required
               >
                 {categories.map((category) => (
-                  <option key={category} value={category}>
+                  <option key={category} value={category} className={theme === "dark" ? "bg-gray-700" : "bg-white"}>
                     {category}
                   </option>
                 ))}
@@ -169,14 +177,14 @@ export const ShareTip = () => {
           {/* Description */}
           <div className="form-control w-full">
             <label className="label">
-              <span className="label-text text-gray-700 dark:text-gray-200">Description</span>
+              <span className={`label-text ${theme === "dark" ? "text-gray-200" : "text-gray-700"} transition-colors duration-200`}>Description</span>
             </label>
             <textarea
               name="description"
               value={formData.description}
               onChange={handleChange}
               placeholder="Share your gardening knowledge, tips, and tricks..."
-              className="textarea textarea-bordered w-full h-40 text-base"
+              className={`textarea textarea-bordered w-full h-40 text-base ${theme === "dark" ? "bg-gray-600 border-gray-500 text-white placeholder-gray-400" : "bg-white text-gray-900 placeholder-gray-500"} transition-colors duration-200`}
               required
             />
           </div>
@@ -184,7 +192,7 @@ export const ShareTip = () => {
           {/* Image URL */}
           <div className="form-control w-full">
             <label className="label">
-              <span className="label-text text-gray-700 dark:text-gray-200">Image URL</span>
+              <span className={`label-text ${theme === "dark" ? "text-gray-200" : "text-gray-700"} transition-colors duration-200`}>Image URL</span>
             </label>
             <input
               type="url"
@@ -192,10 +200,10 @@ export const ShareTip = () => {
               value={formData.imageUrl}
               onChange={handleChange}
               placeholder="https://example.com/my-garden-image.jpg"
-              className="input input-bordered w-full text-base"
+              className={`input input-bordered w-full text-base ${theme === "dark" ? "bg-gray-600 border-gray-500 text-white placeholder-gray-400" : "bg-white text-gray-900 placeholder-gray-500"} transition-colors duration-200`}
             />
             <label className="label">
-              <span className="label-text-alt text-gray-500 dark:text-gray-400">Optional: Add an image URL to showcase your garden tip</span>
+              <span className={`label-text-alt ${theme === "dark" ? "text-gray-400" : "text-gray-500"} transition-colors duration-200`}>Optional: Add an image URL to showcase your garden tip</span>
             </label>
           </div>
           
@@ -204,17 +212,17 @@ export const ShareTip = () => {
             {/* Availability */}
             <div className="form-control w-full">
               <label className="label">
-                <span className="label-text text-gray-700 dark:text-gray-200">Availability</span>
+                <span className={`label-text ${theme === "dark" ? "text-gray-200" : "text-gray-700"} transition-colors duration-200`}>Availability</span>
               </label>
               <select
                 name="availability"
                 value={formData.availability}
                 onChange={handleChange}
-                className="select select-bordered w-full text-base"
+                className={`select select-bordered w-full text-base ${theme === "dark" ? "bg-gray-600 border-gray-500 text-white" : "bg-white text-gray-900"} transition-colors duration-200`}
                 required
               >
                 {availabilityOptions.map((option) => (
-                  <option key={option} value={option}>
+                  <option key={option} value={option} className={theme === "dark" ? "bg-gray-700" : "bg-white"}>
                     {option}
                   </option>
                 ))}
@@ -224,7 +232,7 @@ export const ShareTip = () => {
             {/* User Email */}
             <div className="form-control w-full">
               <label className="label">
-                <span className="label-text text-gray-700 dark:text-gray-200">Email</span>
+                <span className={`label-text ${theme === "dark" ? "text-gray-200" : "text-gray-700"} transition-colors duration-200`}>Email</span>
               </label>
               <input
                 type="email"
@@ -232,7 +240,7 @@ export const ShareTip = () => {
                 value={formData.userEmail}
                 onChange={handleChange}
                 placeholder="your.email@example.com"
-                className="input input-bordered w-full text-base text-gray-500"
+                className={`input input-bordered w-full text-base ${theme === "dark" ? "bg-gray-600 border-gray-500 text-gray-300" : "bg-white text-gray-500"} opacity-75 transition-colors duration-200`}
                 required
                 readOnly
               />
@@ -242,7 +250,7 @@ export const ShareTip = () => {
           {/* User Name */}
           <div className="form-control w-full">
             <label className="label">
-              <span className="label-text text-gray-700 dark:text-gray-200">Your Name</span>
+              <span className={`label-text ${theme === "dark" ? "text-gray-200" : "text-gray-700"} transition-colors duration-200`}>Your Name</span>
             </label>
             <input
               type="text"
@@ -250,7 +258,7 @@ export const ShareTip = () => {
               value={formData.userName}
               onChange={handleChange}
               placeholder="Your Name"
-              className="input input-bordered w-full text-base text-gray-500"
+              className={`input input-bordered w-full text-base ${theme === "dark" ? "bg-gray-600 border-gray-500 text-gray-300" : "bg-white text-gray-500"} opacity-75 transition-colors duration-200`}
               required
               readOnly
             />
@@ -260,9 +268,17 @@ export const ShareTip = () => {
           <div className="form-control w-full mt-8">
             <button
               type="submit"
-              className="btn btn-primary btn-lg w-full"
+              disabled={isSubmitting}
+              className={`btn ${theme === "dark" ? "bg-primary hover:bg-primary-focus text-white" : "bg-primary hover:bg-primary-focus text-white"} btn-lg w-full transition-colors duration-200 ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""}`}
             >
-              Share Your Garden Tip
+              {isSubmitting ? (
+                <>
+                  <span className="loading loading-spinner loading-sm mr-2"></span>
+                  Submitting...
+                </>
+              ) : (
+                "Share Your Garden Tip"
+              )}
             </button>
           </div>
         </form>

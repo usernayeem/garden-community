@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import { ThemeContext } from "../context/ThemeContext";
 
 export const NotFound = () => {
+  const { theme } = useContext(ThemeContext);
+
   return (
-    <div className="p-6 md:p-12 bg-gray-50 dark:bg-gray-800 min-h-screen">
+    <div
+      className={`p-6 md:p-12 min-h-screen ${theme === "dark"
+        ? "bg-gray-800"
+        : "bg-gray-50"} transition-colors duration-200`}
+    >
       <div className="max-w-3xl mx-auto text-center">
         {/* 404 Header */}
         <h1 className="text-8xl md:text-9xl font-bold text-primary mb-6">
@@ -11,7 +18,11 @@ export const NotFound = () => {
         </h1>
 
         {/* Title */}
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">
+        <h2
+          className={`text-3xl md:text-4xl font-bold ${theme === "dark"
+            ? "text-white"
+            : "text-gray-900"} mb-3 transition-colors duration-200`}
+        >
           Page Not Found
         </h2>
 
@@ -21,7 +32,11 @@ export const NotFound = () => {
         </div>
 
         {/* Message */}
-        <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto">
+        <p
+          className={`text-lg ${theme === "dark"
+            ? "text-gray-300"
+            : "text-gray-600"} mb-8 max-w-md mx-auto transition-colors duration-200`}
+        >
           Oops! It seems the garden path you're looking for doesn't exist. This
           area hasn't been planted yet or may have been moved.
         </p>

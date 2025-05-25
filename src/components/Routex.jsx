@@ -7,7 +7,7 @@ import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
 import { ForgetPass } from "../pages/ForgetPass";
 import { ShareTip } from "../pages/ShareTip";
-import BrowseTips from "../pages/BrowseTips";
+import { BrowseTips } from "../pages/BrowseTips";
 import { TipDetails } from "../pages/TipDetails";
 import { MyTips } from "../pages/MyTips";
 import { UpdateTip } from "../pages/UpdateTip";

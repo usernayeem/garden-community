@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router";
+import React, { useState, useEffect, useContext } from "react";
+import { Link } from "react-router-dom"; // Fixed import from react-router to react-router-dom
 import { Typewriter } from "react-simple-typewriter";
+import { ThemeContext } from "../context/ThemeContext";
 
 export const TrendingTips = () => {
+  const { theme } = useContext(ThemeContext);
   const [trendingTips, setTrendingTips] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -12,7 +14,9 @@ export const TrendingTips = () => {
     const fetchTrendingTips = async () => {
       try {
         setLoading(true);
-        const response = await fetch("https://garden-community-brown.vercel.app/trending-tips");
+        const response = await fetch(
+          "https://garden-community-brown.vercel.app/trending-tips"
+        );
 
         if (!response.ok) {
           throw new Error(
@@ -37,27 +41,49 @@ export const TrendingTips = () => {
   const getDifficultyBadgeColor = difficulty => {
     switch (difficulty) {
       case "Easy":
-        return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100";
+        return `badge px-2 py-1 rounded-full ${theme === "dark"
+          ? "bg-green-900 text-green-100"
+          : "bg-green-100 text-green-800"}`;
       case "Medium":
-        return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100";
+        return `badge px-2 py-1 rounded-full ${theme === "dark"
+          ? "bg-yellow-900 text-yellow-100"
+          : "bg-yellow-100 text-yellow-800"}`;
       case "Hard":
-        return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100";
+        return `badge px-2 py-1 rounded-full ${theme === "dark"
+          ? "bg-red-900 text-red-100"
+          : "bg-red-100 text-red-800"}`;
       default:
-        return "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-100";
+        return `badge px-2 py-1 rounded-full ${theme === "dark"
+          ? "bg-gray-900 text-gray-100"
+          : "bg-gray-100 text-gray-800"}`;
     }
   };
 
   return (
-    <section className="py-12 bg-[#f3f4f6] dark:bg-gray-800">
+    <div
+      className={`py-12 transition-colors duration-200 ${theme === "dark"
+        ? "bg-gray-800"
+        : "bg-gray-50"}`}
+    >
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">
+          <h2
+            className={`text-3xl md:text-4xl font-bold mb-3 transition-colors duration-200 ${theme ===
+            "dark"
+              ? "text-white"
+              : "text-gray-900"}`}
+          >
             Top Trending Tips
           </h2>
           <div className="flex justify-center">
             <div className="w-24 h-1 bg-primary rounded-full" />
           </div>
-          <p className="mt-4 text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          <p
+            className={`mt-4 text-lg max-w-2xl mx-auto transition-colors duration-200 ${theme ===
+            "dark"
+              ? "text-gray-300"
+              : "text-gray-600"}`}
+          >
             <Typewriter
               words={[
                 "Discover the most popular gardening tips from our community",
@@ -86,7 +112,11 @@ export const TrendingTips = () => {
                 Loading...
               </span>
             </div>
-            <p className="mt-4 text-gray-600 dark:text-gray-300">
+            <p
+              className={`mt-4 transition-colors duration-200 ${theme === "dark"
+                ? "text-gray-300"
+                : "text-gray-600"}`}
+            >
               Loading trending tips...
             </p>
           </div>}
@@ -94,7 +124,12 @@ export const TrendingTips = () => {
         {/* Error State */}
         {!loading &&
           error &&
-          <div className="text-center py-10 max-w-md mx-auto bg-white dark:bg-gray-700 rounded-lg shadow-md p-6">
+          <div
+            className={`text-center py-12 rounded-lg shadow-md transition-colors duration-200 ${theme ===
+            "dark"
+              ? "bg-gray-700"
+              : "bg-white"}`}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-16 w-16 mx-auto text-red-500"
@@ -109,15 +144,24 @@ export const TrendingTips = () => {
                 d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mt-4 mb-1">
+            <h3
+              className={`text-xl font-semibold mt-4 mb-1 transition-colors duration-200 ${theme ===
+              "dark"
+                ? "text-gray-300"
+                : "text-gray-700"}`}
+            >
               Error Loading Tips
             </h3>
-            <p className="text-gray-500 dark:text-gray-400 mb-4">
+            <p
+              className={`mb-4 transition-colors duration-200 ${theme === "dark"
+                ? "text-gray-400"
+                : "text-gray-500"}`}
+            >
               {error}
             </p>
             <button
               onClick={() => window.location.reload()}
-              className="btn btn-primary"
+              className="btn btn-primary text-white"
             >
               Try Again
             </button>
@@ -131,33 +175,60 @@ export const TrendingTips = () => {
             {trendingTips.map(tip =>
               <div
                 key={tip._id}
-                className="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden border border-gray-100 dark:border-gray-600 transition-transform duration-300 hover:shadow-lg hover:-translate-y-1"
+                className={`rounded-lg shadow-md overflow-hidden border transition-all duration-300 hover:shadow-lg hover:-translate-y-1 ${theme ===
+                "dark"
+                  ? "bg-gray-700 border-gray-600"
+                  : "bg-white border-gray-100"}`}
               >
-                <div className="relative h-48 overflow-hidden bg-gray-100 dark:bg-gray-600">
-                  <img
-                    src={
-                      tip.imageUrl ||
-                      "https://i.ibb.co/7NgZn1V0/no-image-available.webp"
-                    }
-                    alt={tip.title}
-                    className="w-full h-full object-cover"
-                    onError={e => {
-                      e.target.onerror = null;
-                      e.target.src =
-                        "https://i.ibb.co/7NgZn1V0/no-image-available.webp";
-                    }}
-                  />
+                <div
+                  className={`relative h-48 overflow-hidden ${theme === "dark"
+                    ? "bg-gray-600"
+                    : "bg-gray-100"}`}
+                >
+                  {tip.imageUrl
+                    ? <img
+                        src={tip.imageUrl}
+                        alt={tip.title}
+                        className="w-full h-full object-cover"
+                        onError={e => {
+                          e.target.onerror = null;
+                          e.target.src =
+                            "https://i.ibb.co/7NgZn1V/no-image-available.webp";
+                        }}
+                      />
+                    : <div className="w-full h-full flex items-center justify-center">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className={`h-16 w-16 transition-colors duration-200 ${theme ===
+                          "dark"
+                            ? "text-gray-500"
+                            : "text-gray-300"}`}
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                          />
+                        </svg>
+                      </div>}
                   <div className="absolute top-2 right-2 flex flex-col gap-2">
                     <span
-                      className={`badge ${getDifficultyBadgeColor(
-                        tip.difficultyLevel
-                      )}`}
+                      className={getDifficultyBadgeColor(tip.difficultyLevel)}
                     >
                       {tip.difficultyLevel}
                     </span>
                   </div>
                   <div className="absolute bottom-2 right-2">
-                    <span className="badge bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100 flex items-center gap-1">
+                    <span
+                      className={`badge flex items-center gap-1 px-2 py-1 rounded-full ${theme ===
+                      "dark"
+                        ? "bg-red-900 text-red-100"
+                        : "bg-red-100 text-red-800"}`}
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-4 w-4"
@@ -176,22 +247,42 @@ export const TrendingTips = () => {
                 </div>
                 <div className="p-5">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="badge badge-outline text-green-600 border-green-600 dark:text-green-400 dark:border-green-400">
+                    <span
+                      className={`badge badge-outline px-2 py-1 rounded-full border transition-colors duration-200 ${theme ===
+                      "dark"
+                        ? "text-green-400 border-green-400"
+                        : "text-green-600 border-green-600"}`}
+                    >
                       {tip.category}
                     </span>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                    <span
+                      className={`text-sm transition-colors duration-200 ${theme ===
+                      "dark"
+                        ? "text-gray-400"
+                        : "text-gray-500"}`}
+                    >
                       By {tip.userName}
                     </span>
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 line-clamp-2">
+                  <h3
+                    className={`text-lg font-semibold mb-3 line-clamp-2 transition-colors duration-200 ${theme ===
+                    "dark"
+                      ? "text-white"
+                      : "text-gray-900"}`}
+                  >
                     {tip.title}
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
+                  <p
+                    className={`mb-4 line-clamp-2 transition-colors duration-200 ${theme ===
+                    "dark"
+                      ? "text-gray-300"
+                      : "text-gray-600"}`}
+                  >
                     {tip.description}
                   </p>
                   <Link
                     to={`/tip-details/${tip._id}`}
-                    className="btn btn-primary btn-sm w-full"
+                    className="btn btn-primary btn-sm w-full text-white"
                   >
                     Read More
                   </Link>
@@ -204,7 +295,12 @@ export const TrendingTips = () => {
         {!loading &&
           !error &&
           trendingTips.length === 0 &&
-          <div className="text-center py-10 max-w-md mx-auto bg-white dark:bg-gray-700 rounded-lg shadow-md p-6">
+          <div
+            className={`text-center py-10 max-w-md mx-auto rounded-lg shadow-md p-6 transition-colors duration-200 ${theme ===
+            "dark"
+              ? "bg-gray-700"
+              : "bg-white"}`}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-16 w-16 mx-auto text-gray-400"
@@ -219,13 +315,22 @@ export const TrendingTips = () => {
                 d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
               />
             </svg>
-            <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mt-4 mb-1">
+            <h3
+              className={`text-xl font-semibold mt-4 mb-1 transition-colors duration-200 ${theme ===
+              "dark"
+                ? "text-gray-300"
+                : "text-gray-700"}`}
+            >
               No Trending Tips Yet
             </h3>
-            <p className="text-gray-500 dark:text-gray-400 mb-4">
+            <p
+              className={`mb-4 transition-colors duration-200 ${theme === "dark"
+                ? "text-gray-400"
+                : "text-gray-500"}`}
+            >
               Be the first to share your gardening knowledge!
             </p>
-            <Link to="/share-tip" className="btn btn-primary">
+            <Link to="/share-tip" className="btn btn-primary text-white">
               Share a Tip
             </Link>
           </div>}
@@ -235,13 +340,17 @@ export const TrendingTips = () => {
           !error &&
           trendingTips.length > 0 &&
           <div className="text-center mt-10">
-            <Link to="/browse-tips" className="btn btn-outline btn-primary">
+            <Link
+              to="/browse-tips"
+              className={`btn btn-outline transition-colors duration-200 ${theme ===
+              "dark"
+                ? "border-cyan-300 text-cyan-300 hover:bg-primary hover:text-white"
+                : "btn-primary"}`}
+            >
               View All Tips
             </Link>
           </div>}
       </div>
-    </section>
+    </div>
   );
 };
-
-export default TrendingTips;

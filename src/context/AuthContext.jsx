@@ -52,7 +52,9 @@ export const AuthProvider = ({ children }) => {
   // Fetch user data from MongoDB when Firebase user changes
   const fetchUserFromDb = async uid => {
     try {
-      const response = await fetch(`https://garden-community-brown.vercel.app/users/${uid}`);
+      const response = await fetch(
+        `https://garden-community-brown.vercel.app/users/${uid}`
+      );
       if (response.ok) {
         const userData = await response.json();
         setDbUser(userData);

@@ -1,7 +1,11 @@
-import React from "react";
-import { Typewriter } from 'react-simple-typewriter';
+import React, { useContext } from "react";
+import { Typewriter } from "react-simple-typewriter";
+import { ThemeContext } from "../context/ThemeContext";
 
 export const Guide = () => {
+  const { theme } = useContext(ThemeContext);
+
+  // Seasons data
   const seasons = [
     {
       id: 1,
@@ -30,7 +34,8 @@ export const Guide = () => {
         "Prepare soil with compost",
         "Plant cool-season vegetables"
       ],
-      borderColor: "border-green-200 dark:border-green-700"
+      borderColor: theme === "dark" ? "border-green-700" : "border-green-200",
+      bgColor: theme === "dark" ? "bg-gray-700" : "bg-white"
     },
     {
       id: 2,
@@ -59,7 +64,8 @@ export const Guide = () => {
         "Monitor for pests and diseases",
         "Prune flowering perennials"
       ],
-      borderColor: "border-yellow-200 dark:border-yellow-700"
+      borderColor: theme === "dark" ? "border-yellow-700" : "border-yellow-200",
+      bgColor: theme === "dark" ? "bg-gray-700" : "bg-white"
     },
     {
       id: 3,
@@ -88,7 +94,8 @@ export const Guide = () => {
         "Collect seeds for next year",
         "Apply fall fertilizer"
       ],
-      borderColor: "border-orange-200 dark:border-orange-700"
+      borderColor: theme === "dark" ? "border-orange-700" : "border-orange-200",
+      bgColor: theme === "dark" ? "bg-gray-700" : "bg-white"
     },
     {
       id: 4,
@@ -117,20 +124,35 @@ export const Guide = () => {
         "Maintain tools and equipment",
         "Start indoor herb garden"
       ],
-      borderColor: "border-blue-200 dark:border-blue-700"
+      borderColor: theme === "dark" ? "border-blue-700" : "border-blue-200",
+      bgColor: theme === "dark" ? "bg-gray-700" : "bg-white"
     }
   ];
 
   return (
-    <div className="p-12 bg-[#f3f4f6] dark:bg-gray-800">
+    <div
+      className={`p-12 transition-colors duration-200 ${theme === "dark"
+        ? "bg-gray-800"
+        : "bg-gray-50"}`}
+    >
       <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">
+        <h2
+          className={`text-3xl md:text-4xl font-bold mb-3 transition-colors duration-200 ${theme ===
+          "dark"
+            ? "text-white"
+            : "text-gray-900"}`}
+        >
           Seasonal Gardening Guide
         </h2>
         <div className="flex justify-center">
           <div className="w-24 h-1 bg-primary rounded-full" />
         </div>
-        <p className="mt-4 text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+        <p
+          className={`mt-4 text-lg max-w-2xl mx-auto transition-colors duration-200 ${theme ===
+          "dark"
+            ? "text-gray-300"
+            : "text-gray-600"}`}
+        >
           <Typewriter
             words={[
               "Discover what to plant, maintain, and harvest during each season for a thriving garden year-round.",
@@ -152,21 +174,36 @@ export const Guide = () => {
         {seasons.map(season =>
           <div
             key={season.id}
-            className={`rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1 border ${season.borderColor}`}
+            className={`rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border ${season.borderColor} ${season.bgColor}`}
           >
             <div className="p-6">
               <div className="flex justify-center mb-4">
                 {season.icon}
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 text-center">
+              <h3
+                className={`text-xl font-semibold mb-3 text-center transition-colors duration-200 ${theme ===
+                "dark"
+                  ? "text-white"
+                  : "text-gray-900"}`}
+              >
                 {season.name}
               </h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-4 text-center">
+              <p
+                className={`mb-4 text-center transition-colors duration-200 ${theme ===
+                "dark"
+                  ? "text-gray-300"
+                  : "text-gray-600"}`}
+              >
                 {season.description}
               </p>
 
               <div className="rounded-md mb-4">
-                <h4 className="font-medium text-gray-900 dark:text-white mb-2">
+                <h4
+                  className={`font-medium mb-2 transition-colors duration-200 ${theme ===
+                  "dark"
+                    ? "text-white"
+                    : "text-gray-900"}`}
+                >
                   Key Gardening Tasks:
                 </h4>
                 <ul className="space-y-1">
@@ -186,7 +223,12 @@ export const Guide = () => {
                           d="M5 13l4 4L19 7"
                         />
                       </svg>
-                      <span className="text-gray-600 dark:text-gray-300">
+                      <span
+                        className={`transition-colors duration-200 ${theme ===
+                        "dark"
+                          ? "text-gray-300"
+                          : "text-gray-600"}`}
+                      >
                         {task}
                       </span>
                     </li>

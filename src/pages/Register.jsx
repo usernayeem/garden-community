@@ -1,15 +1,16 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { ThemeContext } from "../context/ThemeContext";
 import { useToast } from "../context/ToastContext";
 
 export const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const { registerUser, setUser, googleAuth, updateUserProfile } = useContext(
-    AuthContext
-  );
+  const { registerUser, setUser, googleAuth, updateUserProfile } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
   const toast = useToast();
   const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -38,6 +39,8 @@ export const Register = () => {
 
   const handleRegistration = async e => {
     e.preventDefault();
+    setIsSubmitting(true);
+    
     const formData = new FormData(e.target);
     const name = formData.get("name") || "";
     const email = formData.get("email") || "";
@@ -48,6 +51,7 @@ export const Register = () => {
       toast.warning(
         "Password must have at least 8 characters, including an uppercase letter, a lowercase letter, and a special character."
       );
+      setIsSubmitting(false);
       return;
     }
 
@@ -75,13 +79,17 @@ export const Register = () => {
       // Step 4: Update local user state and redirect
       setUser({ ...user, displayName: name || user.displayName });
       toast.success("Registration successful! Welcome to GardenCommunity!");
-      navigate(`${location.state ? location.state : "/"}`);
+      navigate("/");
     } catch (error) {
       toast.error(error.message || "Registration failed. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const handleGoogleAuth = async () => {
+    setIsSubmitting(true);
+    
     try {
       // Step 1: Authenticate with Google
       const result = await googleAuth();
@@ -101,34 +109,36 @@ export const Register = () => {
       // Step 3: Update local user state and redirect
       setUser(user);
       toast.success("Google signup successful! Welcome to GardenCommunity!");
-      navigate(`${location.state ? location.state : "/"}`);
+      navigate("/");
     } catch (error) {
       toast.error(error.message || "Google signup failed. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="flex flex-col lg:flex-row w-full min-h-[calc(100vh-64px)]">
+    <div className={`flex flex-col lg:flex-row w-full min-h-[calc(100vh-64px)] ${theme === "dark" ? "bg-gray-800" : "bg-gray-50"} transition-colors duration-200`}>
       <div className="w-full lg:w-1/2 flex items-center justify-center m-auto p-6 md:p-12">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
+            <h2 className={`text-3xl font-bold ${theme === "dark" ? "text-white" : "text-gray-900"} mb-3 transition-colors duration-200`}>
               Signup
             </h2>
             <div className="flex justify-center">
               <div className="w-16 h-1 bg-primary rounded-full" />
             </div>
-            <p className="mt-4 text-gray-600 dark:text-gray-300">
+            <p className={`mt-4 ${theme === "dark" ? "text-gray-300" : "text-gray-600"} transition-colors duration-200`}>
               Join the GardenCommunity and connect with fellow plant enthusiasts
             </p>
           </div>
 
-          <div className="bg-white dark:bg-gray-700 rounded-lg shadow-md overflow-hidden border border-gray-100 dark:border-gray-600 p-6">
+          <div className={`${theme === "dark" ? "bg-gray-700 border-gray-600" : "bg-white border-gray-100"} rounded-lg shadow-md overflow-hidden border p-6 transition-colors duration-200`}>
             <form onSubmit={handleRegistration}>
               <div className="mb-4">
                 <label
                   htmlFor="name"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  className={`block text-sm font-medium ${theme === "dark" ? "text-gray-200" : "text-gray-700"} mb-1 transition-colors duration-200`}
                 >
                   Name
                 </label>
@@ -136,7 +146,11 @@ export const Register = () => {
                   type="text"
                   id="name"
                   name="name"
-                  className="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-white text-base focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className={`w-full px-4 py-3 rounded-md border text-base ${
+                    theme === "dark" 
+                      ? "border-gray-600 bg-gray-600 text-white placeholder-gray-400" 
+                      : "border-gray-300 bg-white text-gray-800 placeholder-gray-500"
+                  } focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors duration-200`}
                   placeholder="Enter your name"
                 />
               </div>
@@ -144,7 +158,7 @@ export const Register = () => {
               <div className="mb-4">
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  className={`block text-sm font-medium ${theme === "dark" ? "text-gray-200" : "text-gray-700"} mb-1 transition-colors duration-200`}
                 >
                   Email
                 </label>
@@ -152,7 +166,11 @@ export const Register = () => {
                   type="email"
                   id="email"
                   name="email"
-                  className="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-white text-base focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className={`w-full px-4 py-3 rounded-md border text-base ${
+                    theme === "dark" 
+                      ? "border-gray-600 bg-gray-600 text-white placeholder-gray-400" 
+                      : "border-gray-300 bg-white text-gray-800 placeholder-gray-500"
+                  } focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors duration-200`}
                   placeholder="Enter your email"
                   required
                 />
@@ -162,12 +180,12 @@ export const Register = () => {
                 <div className="flex justify-between items-center mb-1">
                   <label
                     htmlFor="password"
-                    className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                    className={`block text-sm font-medium ${theme === "dark" ? "text-gray-200" : "text-gray-700"} transition-colors duration-200`}
                   >
                     Password
                   </label>
                   <Link
-                    to="/forgot-password"
+                    to="/forget-password"
                     className="text-xs text-primary hover:underline"
                   >
                     Forgot Password?
@@ -178,14 +196,18 @@ export const Register = () => {
                     type={showPassword ? "text" : "password"}
                     id="password"
                     name="password"
-                    className="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-white text-base focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className={`w-full px-4 py-3 rounded-md border text-base ${
+                      theme === "dark" 
+                        ? "border-gray-600 bg-gray-600 text-white placeholder-gray-400" 
+                        : "border-gray-300 bg-white text-gray-800 placeholder-gray-500"
+                    } focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors duration-200`}
                     placeholder="Enter your password"
                     required
                   />
                   <button
                     type="button"
                     onClick={togglePasswordVisibility}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400"
+                    className={`absolute right-3 top-1/2 transform -translate-y-1/2 ${theme === "dark" ? "text-gray-400" : "text-gray-500"} transition-colors duration-200`}
                   >
                     {showPassword
                       ? <svg
@@ -224,7 +246,7 @@ export const Register = () => {
                         </svg>}
                   </button>
                 </div>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"} mt-1 transition-colors duration-200`}>
                   Must be at least 8 characters with 1 uppercase, 1 lowercase,
                   and 1 special character.
                 </p>
@@ -233,7 +255,7 @@ export const Register = () => {
               <div className="mb-4">
                 <label
                   htmlFor="photo"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  className={`block text-sm font-medium ${theme === "dark" ? "text-gray-200" : "text-gray-700"} mb-1 transition-colors duration-200`}
                 >
                   PhotoURL
                 </label>
@@ -241,22 +263,34 @@ export const Register = () => {
                   type="text"
                   id="photo"
                   name="photo"
-                  className="w-full px-4 py-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-800 dark:text-white text-base focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className={`w-full px-4 py-3 rounded-md border text-base ${
+                    theme === "dark" 
+                      ? "border-gray-600 bg-gray-600 text-white placeholder-gray-400" 
+                      : "border-gray-300 bg-white text-gray-800 placeholder-gray-500"
+                  } focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors duration-200`}
                   placeholder="Enter your photo url"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full py-3 px-4 bg-primary hover:bg-opacity-90 text-white font-medium rounded-md transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary mb-4"
+                disabled={isSubmitting}
+                className={`btn ${theme === "dark" ? "bg-primary hover:bg-primary-focus text-white" : "bg-primary hover:bg-primary-focus text-white"} btn-lg w-full transition-colors duration-200 mb-4 ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""}`}
               >
-                Register
+                {isSubmitting ? (
+                  <>
+                    <span className="loading loading-spinner loading-sm mr-2"></span>
+                    Registering...
+                  </>
+                ) : (
+                  "Register"
+                )}
               </button>
             </form>
 
             <div className="relative flex items-center justify-center my-6">
-              <div className="absolute w-full border-t border-gray-300 dark:border-gray-600" />
-              <span className="relative bg-white dark:bg-gray-700 px-4 text-sm text-gray-500 dark:text-gray-400">
+              <div className={`absolute w-full border-t ${theme === "dark" ? "border-gray-600" : "border-gray-300"} transition-colors duration-200`} />
+              <span className={`relative ${theme === "dark" ? "bg-gray-700 text-gray-400" : "bg-white text-gray-500"} px-4 text-sm transition-colors duration-200`}>
                 Or continue with
               </span>
             </div>
@@ -264,7 +298,12 @@ export const Register = () => {
             <button
               onClick={handleGoogleAuth}
               type="button"
-              className="w-full py-3 px-4 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-900 text-gray-800 dark:text-white font-medium rounded-md transition duration-300 ease-in-out border border-gray-300 dark:border-gray-600 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 mb-6"
+              disabled={isSubmitting}
+              className={`btn btn-outline btn-lg w-full ${
+                theme === "dark" 
+                  ? "border-gray-400 text-gray-300 hover:bg-gray-600" 
+                  : "border-gray-300 text-gray-700 hover:bg-gray-100"
+              } transition-colors duration-200 mb-6 ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""}`}
             >
               <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                 <path
@@ -276,11 +315,11 @@ export const Register = () => {
             </button>
 
             <div className="text-center">
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"} transition-colors duration-200`}>
                 Already have an account?{" "}
                 <Link
                   to="/login"
-                  className="text-primary hover:underline font-medium"
+                  className={`${theme === "dark" ? "text-white" : "text-primary"} hover:underline font-medium`}
                 >
                   Login
                 </Link>
