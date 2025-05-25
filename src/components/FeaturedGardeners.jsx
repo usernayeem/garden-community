@@ -31,7 +31,7 @@ export const FeaturedGardeners = () => {
     const fetchGardeners = async () => {
       try {
         const response = await fetch(
-          "https://garden-community-brown.vercel.app/gardeners"
+          "https://garden-community-brown.vercel.app/featured-gardeners"
         );
 
         if (!response.ok) {
@@ -70,15 +70,6 @@ export const FeaturedGardeners = () => {
     if (years <= 10) return "Advanced";
     return "Expert";
   };
-
-  // Get current gardeners for pagination
-  const indexOfLastGardener = currentPage * itemsPerPage;
-  const indexOfFirstGardener = indexOfLastGardener - itemsPerPage;
-  const currentGardeners = filteredGardeners.slice(
-    indexOfFirstGardener,
-    indexOfLastGardener
-  );
-  const totalPages = Math.ceil(filteredGardeners.length / itemsPerPage);
 
   // Helper function for status badge color
   const getStatusBadgeColor = (status) => {
@@ -267,7 +258,7 @@ export const FeaturedGardeners = () => {
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {currentGardeners.map((gardener, index) => (
+              {gardeners.map((gardener, index) => (
                 <div
                   key={gardener._id}
                   className={`rounded-lg shadow-md overflow-hidden border transition-all duration-200 hover:shadow-lg hover:-translate-y-1 ${

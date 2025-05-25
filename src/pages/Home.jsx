@@ -9,10 +9,10 @@ export const Home = () => {
   return (
     <div>
       <Banner />
-      <TrendingTips />
       <FeaturedGardeners />
-      <Guide />
+      <TrendingTips />
       <Achievements />
+      <Guide />
     </div>
   );
 };
